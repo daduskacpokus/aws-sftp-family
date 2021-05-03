@@ -8,10 +8,11 @@ resource "aws_transfer_server" "example" {
   }
   endpoint_type = "VPC"
   endpoint_details {
-    vpc_id = "vpc-06a97bf1ced4db781"
-    subnet_ids = ["subnet-01963496a50b4ac78"]
-    address_allocation_ids = ["eipalloc-0d6a2f4948a11cfba"]
+    vpc_id                 = aws_cloudformation_stack.sftp_vpc.outputs.vpcID
+    subnet_ids             = [aws_cloudformation_stack.sftp_vpc.outputs.subnet1ID, aws_cloudformation_stack.sftp_vpc.outputs.subnet2ID]
+    address_allocation_ids = [aws_cloudformation_stack.sftp_vpc.outputs.elasticIP1, aws_cloudformation_stack.sftp_vpc.outputs.elasticIP2]
   }
+  depends_on = [aws_cloudformation_stack.sftp_vpc]
 }
 
 resource "aws_iam_role" "example" {

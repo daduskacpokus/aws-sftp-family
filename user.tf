@@ -39,12 +39,13 @@ POLICY
 }
 
 resource "aws_transfer_user" "user1" {
-  server_id = aws_transfer_server.example.id
-  user_name = "tftestuser"
-  role      = aws_iam_role.user1.arn
+  server_id           = aws_transfer_server.example.id
+  user_name           = "tftestuser"
+  role                = aws_iam_role.user1.arn
   home_directory_type = "LOGICAL"
   home_directory_mappings {
-    entry = "/"
-    target = "/awstransferworkshopbucket1-c56b9610-abfd-11eb-8f6e-02d2dcfa6bf9"
+    entry  = "/"
+    target = "/${aws_cloudformation_stack.sftp_vpc.outputs.bucket1Name}"
   }
+  depends_on = [aws_cloudformation_stack.sftp_vpc]
 }
